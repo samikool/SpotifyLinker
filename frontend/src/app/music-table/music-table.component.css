@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+    width: 100vw;
+}
+
+.tr-body{
+    background-color: var(--color-accent-light);
+}
+
+.tr-head{
+    background-color: var(--color-primary-light);
+}

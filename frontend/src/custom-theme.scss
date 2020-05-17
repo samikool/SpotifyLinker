@@ -1,0 +1,128 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+//@import './custom-component-theme.scss';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+//Custom colors
+$pri-green: (
+    50: #E6F7EA,
+    100: #C3EACB,
+    200: #9CDCAA,
+    300: #71CF88,
+    400: #4CC46E,
+    500: #1DB954,
+    600: #10AA4A,
+    700: #00973E,
+    800: #008633,
+    900: #00671E,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: $black-87-opacity,
+        A200: $black-87-opacity,
+        A400: $black-87-opacity,
+        A700: white,
+    )
+);
+
+$accent : (
+    50: #fcfcfc,
+    100: #f7f7f7,
+    200: #f2f2f2,
+    300: #ebebeb,
+    400: #c9c9c9,
+    500: #ababab,
+    600: #818181,
+    700: #6c6c6c,
+    800: #4d4d4d,
+    900: #2b2b2b,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: $black-87-opacity,
+        A200: $black-87-opacity,
+        A400: $black-87-opacity,
+        A700: white,
+    )
+    
+);
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$spotifylinker-primary: mat-palette($pri-green);
+$spotifylinker-accent: mat-palette($accent, 500, 50, 900);
+
+// The warn palette is optional (defaults to red).
+$spotifylinker-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$spotifylinker-theme: mat-light-theme($spotifylinker-primary, $spotifylinker-accent, $spotifylinker-warn);
+
+.primary-color-light{
+    color: mat-color($spotifylinker-primary, 100);
+}
+
+.primary-color{
+    color: mat-color($spotifylinker-primary);
+}
+
+.primary-color-dark{
+    color: mat-color($spotifylinker-primary, 900);
+}
+
+.accent-color-light{
+    color: mat-color($spotifylinker-accent, 50);
+}
+
+.accent-color{
+    color: mat-color($spotifylinker-accent);
+}
+
+.accent-color-dark{
+    color: mat-color($spotifylinker-accent, 900);
+}
+
+.warn-color{
+    color: mat-color($spotifylinker-warn);
+}
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+
+@include angular-material-theme($spotifylinker-theme);
+
+:root {
+    --color-primary-light: #{mat-color($spotifylinker-primary, 100)};
+    --color-primary: #{mat-color($spotifylinker-primary)};
+    --color-primary-dark: #{mat-color($spotifylinker-primary), 900};
+    --color-accent-light: #{mat-color($spotifylinker-accent, 200)};
+    --color-accent: #{mat-color($spotifylinker-accent)};
+    --color-accent-dark: #{mat-color($spotifylinker-accent, 900)};
+    --color-warn: #{mat-color($spotifylinker-warn)};
+  }
