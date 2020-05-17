@@ -1,10 +1,17 @@
-import {Component, OnInit, enableProdMode} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 export interface PeriodicElement {
   name: string;
   position: number;
   weight: number;
   symbol: string;
+}
+
+export interface Song {
+  name: string;
+  position: number;
+  artist: string;
+  album: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -47,25 +54,76 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class MusicTableComponent implements OnInit{
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  songColumns: string[] = ['position', 'name', 'artist', 'album']
   dataSource = ELEMENT_DATA;
+  allData = {};
+  playlistName: string = ''; 
 
   async ngOnInit(){
+    let url = window.location.toString();
+    if(url !== 'http://localhost:4200/'){
+      console.log(url);
+      let accessToken = url.split('#')[1].split('&')[0].split('=')[1];
+      let refreshToken = url.split('#')[1].split('&')[1].split('=')[1];
+      console.log(accessToken);
+      console.log(refreshToken);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      
+      window.location.href = 'http://localhost:4200/';
+    }
 
-    // let body = {
-    //   'Content-Type': 'application/json',
-    //   'client_id': 'e15dcd46e3cd4222962b20229fb4f9e7',
-    //   'response_type': 'code',
-    //   'score': 'user-read-email',
-    //   'mode':'cors'
-    // }
+    if(localStorage.getItem('accessToken')){
+      this.getPlaylists()
+    }
+  }
 
-    // let response = await fetch('https://cors-anywhere.accounts.spotify.com/authorize', {
-    //   method: 'GET',
-    //   headers: body,
-
-    // })
-
-    //window.location.href = 'http://localhost:3005/login'
+  async getPlaylists(){
+    console.log('access')
+    let token = await localStorage.getItem('accessToken');
+    let response = await fetch('http://localhost:3005/playlists', {
+      method: 'GET',
+      headers: {
+        'ContentType' : 'application/json',
+        'Authorization' : 'Bearer ' + token,
+      }
+    })
     
+    if(!response.ok){
+      console.log('error getting playlists')
+    }
+
+    response = await response.json();
+    console.log(response);
+    console.log(response['playlists'])
+
+    let data = {};
+    response['playlists'].forEach(async (playList) => {
+      console.log(playList.name)
+      data[playList.name] = await this.getSongs(playList.tracks.href, playList.tracks.total)
+    });
+    this.allData = data; 
+  }
+
+  async getSongs(url, total){
+    let token = await localStorage.getItem('accessToken');
+    let response = await fetch('http://localhost:3005/tracks', {
+    method: 'GET',
+    headers: 
+      {
+        'ContentType' : 'application/json',
+        'Authorization' : 'Bearer ' + token,
+        'link' : url,
+        'total' : total.toString(),
+      }
+    })
+    
+    response = await response.json();
+    return response['tracks']; 
+  }
+
+  async setTableData(playlistName, tracks){
+    let tempData = []
+
   }
 }

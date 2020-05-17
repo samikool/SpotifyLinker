@@ -13,9 +13,13 @@ var redirect_uri = 'http://localhost:3005/authCallback'; // Your redirect uri
 
 app.use(cors())
 
+app.get('/', async (req,res) => {
+  res.redirect('localhost:4200/')
+})
+
 app.get('/login', async (req, res) => {
     console.log('hello')
-    var scope = 'user-read-private user-read-email';
+    var scope = 'user-read-private user-read-email,playlist-read-private';
     res.redirect('https://accounts.spotify.com/authorize?' + 
     querystring.stringify({
         response_type: 'code',
@@ -28,7 +32,6 @@ app.get('/login', async (req, res) => {
 
 app.get('/authCallback', async(req, res) => {
     console.log(req.query.code)
-    console.log('here')
 
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
@@ -60,12 +63,63 @@ app.get('/authCallback', async(req, res) => {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('http://localhost:4200/' +
+        res.redirect('http://localhost:4200/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
         }));
     })
+})
+
+app.get('/playlists', async(req, res) => {
+  //console.log(req.headers)
+
+  let token = req.headers.authorization.split(' ')[1]
+
+  let response = await fetch('http://api.spotify.com/v1/users/sammy404/playlists', {
+    method: 'GET',
+    headers: {
+      'ContentType' : 'application/json',
+      'Authorization' : 'Bearer ' + token
+    }
+   })
+
+   response = await response.json();
+   //console.log(response)
+   res.json({playlists: response.items})
+
+})
+
+app.get('/tracks', async(req, res) => {
+  let token = req.headers.authorization.split(' ')[1];
+  let link = req.headers.link;
+  let total = req.headers.total;
+
+  console.log(link);
+  console.log(total)
+
+  let items = [];
+  let tracksNeeded = total;
+  let offset = 0;
+  while(tracksNeeded>0){
+    let response = await fetch(link+'?offset='+offset, {
+    method: 'GET',
+    headers: 
+      {
+        'ContentType' : 'application/json',
+        'Authorization' : 'Bearer ' + token,
+      }
+    })
+    response = await response.json();
+    response.items.forEach(track => {
+      items.push(track)
+    });
+    //console.log(response)
+    tracksNeeded -= 100;
+    offset += 100;
+  }
+
+  res.json({tracks: items});
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))

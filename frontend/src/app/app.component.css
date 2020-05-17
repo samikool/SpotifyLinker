@@ -27,6 +27,11 @@
     padding-right: 10px;
   }
   
+  .paddingRight{
+    margin-right: 30px;
+    
+  }
+
   .mat-toolbar {
     position: relative;
     height: 60px;
