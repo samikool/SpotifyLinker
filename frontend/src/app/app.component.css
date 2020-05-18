@@ -40,6 +40,19 @@
     align-items: center;
   } 
 
+  .mat-menu-item:hover{
+    background-color: var(--color-primary-light);
+    
+  }
+
+  /* .mat-menu-item{
+    margin-top: 5px;
+  } */
+
+  ::ng-deep .mat-menu-content{
+    background-color: var(--color-accent-light);
+  }
+
   .content {
     display: flex;
     flex-wrap: wrap;

@@ -3,8 +3,16 @@ table {
     width: 100vw;
 }
 
+th.mat-sort-header-sorted {
+    color: black;
+}
+
 .tr-body{
     background-color: var(--color-accent-light);
+}
+
+.tr-body:hover{
+    background-color: var(--color-primary-light);
 }
 
 .tr-head{

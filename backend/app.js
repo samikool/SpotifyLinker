@@ -9,16 +9,16 @@ const querystring = require('querystring');
 
 var client_id = 'e15dcd46e3cd4222962b20229fb4f9e7'; // Your client id
 var client_secret = '792a60dde9ae4b97847a2c777e171f9f'; // Your secret
-var redirect_uri = 'http://localhost:3005/authCallback'; // Your redirect uri
+var redirect_uri = 'http://spotifygrabber.mooo.com:3005/authCallback'; // Your redirect uri
 
 app.use(cors())
 
 app.get('/', async (req,res) => {
-  res.redirect('localhost:4200/')
+  res.redirect('http://spotifygrabber.mooo.com:4200/')
 })
 
 app.get('/login', async (req, res) => {
-    console.log('hello')
+    //console.log('hello')
     var scope = 'user-read-private user-read-email,playlist-read-private';
     res.redirect('https://accounts.spotify.com/authorize?' + 
     querystring.stringify({
@@ -31,7 +31,7 @@ app.get('/login', async (req, res) => {
 })
 
 app.get('/authCallback', async(req, res) => {
-    console.log(req.query.code)
+    //console.log(req.query.code)
 
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
@@ -47,7 +47,7 @@ app.get('/authCallback', async(req, res) => {
     };
 
     request.post(authOptions, function(error, response, body) {
-        console.log(body)
+        //console.log(body)
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
 
@@ -63,7 +63,7 @@ app.get('/authCallback', async(req, res) => {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('http://localhost:4200/#' +
+        res.redirect('http://spotifygrabber.mooo.com:4200/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
@@ -95,8 +95,8 @@ app.get('/tracks', async(req, res) => {
   let link = req.headers.link;
   let total = req.headers.total;
 
-  console.log(link);
-  console.log(total)
+  // console.log(link);
+  // console.log(total)
 
   let items = [];
   let tracksNeeded = total;

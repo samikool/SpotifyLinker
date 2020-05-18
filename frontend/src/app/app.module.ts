@@ -8,8 +8,11 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { MusicTableComponent } from './music-table/music-table.component';
 
 import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort'
 
 import {MatButtonModule} from '@angular/material/button';
+
+import {MatMenuModule} from '@angular/material/menu'
 
 
 
@@ -24,6 +27,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatToolbarModule,
     MatTableModule,
     MatButtonModule,
+    MatMenuModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

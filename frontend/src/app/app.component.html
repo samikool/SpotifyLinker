@@ -15,21 +15,49 @@
 
     <span class='spacer'></span>
 
-
-
-    <!-- <a class="paddingRight" mat-raised-button color='accent' href="http://www.google.com">
+    <button *ngIf="!loggedIn" 
+      class="paddingRight" 
+      mat-raised-button  color='accent' 
+      (click)="onLoginClick()"
+    >
       Login with Spotify
-    </a> -->
+    </button>
 
-    <a class="paddingRight" mat-raised-button color='accent' href="http://localhost:3005/login">
-      Login with Spotify
-    </a>
+    <button *ngIf="loggedIn"
+      class="paddingRight"
+      mat-raised-button color='accent'
+      [matMenuTriggerFor]="playlists"
+    >
+      Playlist: {{ playlistName }}
+    </button>
+
+    <mat-menu #playlists="matMenu">
+      <button *ngFor="let playList of playListNames"  
+        mat-menu-item
+        (click)="onPlayListChange($event)" 
+        value={{playList}}
+      >
+        {{ playList }}
+      </button>
+      <!-- <button mat-menu-item >Fishes</button>
+      <button mat-menu-item >Amphibians</button> -->
+    </mat-menu>
+
+    <button *ngIf="loggedIn" 
+      class="paddingRight" 
+      mat-raised-button  color='accent' 
+      (click)="onLogoutClick()"
+    >
+      Logout
+    </button>
 
     
 </mat-toolbar>
 
 <div class="content" role="main">
-  <app-music-table></app-music-table>
+  <app-music-table 
+    [dataSource]="dataSource"
+  ></app-music-table>
 </div>
 
 
